@@ -1,0 +1,38 @@
+version: '3.3'
+services:
+  db:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    networks:
+      web:
+        ipv4_address: 202.202.0.8
+  wordpress:
+    image: wordpress
+    ports:
+      - "80:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      - db
+    networks:
+      web:
+        ipv4_address: 202.202.0.6
+  kali:
+    image: gferrara8596/ns-kali
+    networks:
+      web:
+        ipv4_address: 202.202.0.5
+
+networks:
+  web:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 202.202.0.0/16
