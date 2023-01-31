@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   db:
-    image: mysql
+    image: mysql:8.0.15
     volumes:
       - ./sql:/var/lib/mysql
     environment:
@@ -13,7 +13,7 @@ services:
       web:
         ipv4_address: 202.202.0.8
   wordpress:
-    image: wordpress
+    image: wordpress:5.1.1-php7.1-fpm
     volumes:
       - ./wp/config/php.conf.ini:/usr/local/etc/php/conf.d/php.ini
       - ./wp-data:/var/www/html
