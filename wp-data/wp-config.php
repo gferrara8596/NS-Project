@@ -54,7 +54,7 @@ define( 'AUTH_SALT',        '429d0908335c5c952004534e16ea40e48496da25');
 define( 'SECURE_AUTH_SALT', '71c9825d66f8b4e4d8454c6e3dff66940aa905f5');
 define( 'LOGGED_IN_SALT',   'c6d43044cfd3f00f1557d27b2445aaa97a539e21');
 define( 'NONCE_SALT',       'b0461e36ee4b001514869b26731f11ec993b43f0');
-
+define( 'WP_AUTO_UPDATE_CORE', false);
 /**#@-*/
 
 /**
