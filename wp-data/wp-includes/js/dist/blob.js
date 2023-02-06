@@ -102,6 +102,10 @@ __webpack_require__.r(__webpack_exports__);
 var _window$URL = window.URL,
     createObjectURL = _window$URL.createObjectURL,
     revokeObjectURL = _window$URL.revokeObjectURL;
+/**
+ * @type {Record<string, File|undefined>}
+ */
+
 var cache = {};
 /**
  * Create a blob URL from a file.
@@ -123,7 +127,7 @@ function createBlobURL(file) {
  *
  * @param {string} url The blob URL.
  *
- * @return {?File} The file for the blob URL.
+ * @return {File|undefined} The file for the blob URL.
  */
 
 function getBlobByURL(url) {

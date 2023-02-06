@@ -118,6 +118,20 @@ var logged = Object.create(null);
  * @param {?string} options.plugin      Plugin name if it's a plugin feature
  * @param {?string} options.link        Link to documentation
  * @param {?string} options.hint        Additional message to help transition away from the deprecated feature.
+ *
+ * @example
+ * ```js
+ * import deprecated from '@wordpress/deprecated';
+ *
+ * deprecated( 'Eating meat', {
+ * 	version: 'the future',
+ * 	alternative: 'vegetables',
+ * 	plugin: 'the earth',
+ * 	hint: 'You may find it beneficial to transition gradually.',
+ * } );
+ *
+ * // Logs: 'Eating meat is deprecated and will be removed from the earth in the future. Please use vegetables instead. Note: You may find it beneficial to transition gradually.'
+ * ```
  */
 
 function deprecated(feature) {
@@ -128,11 +142,11 @@ function deprecated(feature) {
       link = options.link,
       hint = options.hint;
   var pluginMessage = plugin ? " from ".concat(plugin) : '';
-  var versionMessage = version ? "".concat(pluginMessage, " in ").concat(version) : '';
+  var versionMessage = version ? " and will be removed".concat(pluginMessage, " in version ").concat(version) : '';
   var useInsteadMessage = alternative ? " Please use ".concat(alternative, " instead.") : '';
   var linkMessage = link ? " See: ".concat(link) : '';
   var hintMessage = hint ? " Note: ".concat(hint) : '';
-  var message = "".concat(feature, " is deprecated and will be removed").concat(versionMessage, ".").concat(useInsteadMessage).concat(linkMessage).concat(hintMessage); // Skip if already logged.
+  var message = "".concat(feature, " is deprecated").concat(versionMessage, ".").concat(useInsteadMessage).concat(linkMessage).concat(hintMessage); // Skip if already logged.
 
   if (message in logged) {
     return;

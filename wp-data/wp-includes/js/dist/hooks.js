@@ -87,6 +87,89 @@ this["wp"] = this["wp"] || {}; this["wp"]["hooks"] =
 /************************************************************************/
 /******/ ({
 
+/***/ "25BE":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _iterableToArray; });
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+}
+
+/***/ }),
+
+/***/ "BsWD":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _unsupportedIterableToArray; });
+/* harmony import */ var _arrayLikeToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("a3WO");
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return Object(_arrayLikeToArray__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return Object(_arrayLikeToArray__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(o, minLen);
+}
+
+/***/ }),
+
+/***/ "KQm4":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, "a", function() { return /* binding */ _toConsumableArray; });
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js
+var arrayLikeToArray = __webpack_require__("a3WO");
+
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/arrayWithoutHoles.js
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return Object(arrayLikeToArray["a" /* default */])(arr);
+}
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/iterableToArray.js
+var iterableToArray = __webpack_require__("25BE");
+
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js
+var unsupportedIterableToArray = __webpack_require__("BsWD");
+
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/nonIterableSpread.js
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js
+
+
+
+
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || Object(iterableToArray["a" /* default */])(arr) || Object(unsupportedIterableToArray["a" /* default */])(arr) || _nonIterableSpread();
+}
+
+/***/ }),
+
+/***/ "a3WO":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _arrayLikeToArray; });
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
+/***/ }),
+
 /***/ "gEOj":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -177,6 +260,9 @@ function validateHookName(hookName) {
 /* harmony default export */ var build_module_validateHookName = (validateHookName);
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/hooks/build-module/createAddHook.js
+/**
+ * Internal dependencies
+ */
 
 
 
@@ -272,6 +358,9 @@ function createAddHook(hooks) {
 /* harmony default export */ var build_module_createAddHook = (createAddHook);
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/hooks/build-module/createRemoveHook.js
+/**
+ * Internal dependencies
+ */
 
 
 
@@ -361,24 +450,38 @@ function createRemoveHook(hooks, removeAll) {
  * @param  {Object}   hooks Stored hooks, keyed by hook name.
  *
  * @return {Function}       Function that returns whether any handlers are
- *                          attached to a particular hook.
+ *                          attached to a particular hook and optional namespace.
  */
 function createHasHook(hooks) {
   /**
-   * Returns how many handlers are attached for the given hook.
+   * Returns whether any handlers are attached for the given hookName and optional namespace.
    *
-   * @param  {string}  hookName The name of the hook to check for.
+   * @param {string}  hookName  The name of the hook to check for.
+   * @param {?string} namespace Optional. The unique namespace identifying the callback
+   *                                      in the form `vendor/plugin/function`.
    *
    * @return {boolean} Whether there are handlers that are attached to the given hook.
    */
-  return function hasHook(hookName) {
+  return function hasHook(hookName, namespace) {
+    // Use the namespace if provided.
+    if ('undefined' !== typeof namespace) {
+      return hookName in hooks && hooks[hookName].handlers.some(function (hook) {
+        return hook.namespace === namespace;
+      });
+    }
+
     return hookName in hooks;
   };
 }
 
 /* harmony default export */ var build_module_createHasHook = (createHasHook);
 
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js + 2 modules
+var toConsumableArray = __webpack_require__("KQm4");
+
 // CONCATENATED MODULE: ./node_modules/@wordpress/hooks/build-module/createRunHook.js
+
+
 /**
  * Returns a function which, when invoked, will execute all callbacks
  * registered to a hook of the specified type, optionally returning the final
@@ -408,7 +511,9 @@ function createRunHook(hooks, returnFirstArg) {
     }
 
     hooks[hookName].runs++;
-    var handlers = hooks[hookName].handlers;
+    var handlers = hooks[hookName].handlers; // The following code is stripped from production builds.
+
+    if (false) {}
 
     for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
@@ -508,6 +613,9 @@ function createDoingHook(hooks) {
 /* harmony default export */ var build_module_createDoingHook = (createDoingHook);
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/hooks/build-module/createDidHook.js
+/**
+ * Internal dependencies
+ */
 
 /**
  * Returns a function which, when invoked, will return the number of times a
@@ -538,6 +646,9 @@ function createDidHook(hooks) {
 /* harmony default export */ var build_module_createDidHook = (createDidHook);
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/hooks/build-module/createHooks.js
+/**
+ * Internal dependencies
+ */
 
 
 
@@ -581,6 +692,9 @@ function createHooks() {
 /* harmony default export */ var build_module_createHooks = (createHooks);
 
 // CONCATENATED MODULE: ./node_modules/@wordpress/hooks/build-module/index.js
+/**
+ * Internal dependencies
+ */
 
 
 var _createHooks = build_module_createHooks(),
