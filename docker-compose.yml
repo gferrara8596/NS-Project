@@ -2,8 +2,9 @@ version: '3.3'
 services:
   db:
     image: mysql:5.7.41
-    volumes:
-      - ./sql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    platform: linux/x86_64/v8
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: wordpress
@@ -11,12 +12,9 @@ services:
       MYSQL_PASSWORD: wordpress
     networks:
       web:
-        ipv4_address: 202.202.0.8
-  wordpress:
-    image: wordpress:5.3-php7.4
-    volumes:
-      - ./wp/config/php.conf.ini:/usr/local/etc/php/conf.d/php.ini
-      - ./wp-data:/var/www/html
+        ipv4_address: 202.202.0.18
+  wordpress2:
+    image: wordpress:5.5.3-php7.3
     ports:
       - "80:80"
     environment:
@@ -28,42 +26,12 @@ services:
       - db
     networks:
       web:
-        ipv4_address: 202.202.0.6
-  db2:
-    image: mariadb
-    #volumes:
-     # - ./sql2:/
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
-    networks:
-      web:
-        ipv4_address: 202.202.0.18
-  wordpress2:
-    image: wordpress:5.5.3-php7.3
-    volumes:
-      - ./wp2/config/php.conf.ini:/usr/local/etc/php/conf.d/php.ini
-      - ./wp-data2:/var/www/html
-    ports:
-      - "8080:8080"
-    environment:
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress
-    depends_on:
-      - db2
-    networks:
-      web:
         ipv4_address: 202.202.0.16
   kali:
     image: gferrara8596/ns-kali
     networks:
       web:
         ipv4_address: 202.202.0.5
-
 networks:
   web:
     driver: bridge
