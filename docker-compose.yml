@@ -5,7 +5,6 @@ services:
     volumes:
       - ./sql:/var/lib/mysql
     
-    platform: linux/x86_64/v8
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: wordpress
@@ -39,13 +38,6 @@ services:
     networks:
       web:
         ipv4_address: 202.202.0.5
-  chrome:
-    image: kasmweb/chrome
-    ports:
-      - "4444:4444"
-    networks:
-      web:
-        ipv4_address: 202.202.0.9
 
 networks:
   web:
