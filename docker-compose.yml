@@ -5,6 +5,9 @@ services:
     volumes:
       - ./sql:/var/lib/mysql
     
+    ports:
+      - "3307:3306"
+    
     platform: linux/x86_64/v8
     environment:
       MYSQL_ROOT_PASSWORD: password
@@ -14,6 +17,20 @@ services:
     networks:
       web:
         ipv4_address: 202.202.0.18
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=202.202.0.18
+      - PMA_PORT=3306
+    networks:
+      web:
+        ipv4_address: 202.202.0.12
+    
   wordpress:
     image: wordpress:5.5.3-php7.3
     ports:
@@ -40,12 +57,19 @@ services:
       web:
         ipv4_address: 202.202.0.5
   
-  
+  firefox:
+    image: jlesage/firefox
+    ports:
+      - "5800:5800"
+    
+    networks:
+      web:
+        ipv4_address: 202.202.0.11
 
 networks:
   web:
     driver: bridge
     ipam:
       config:
-        - subnet: 202.202.0.0/16
+        - subnet: 202.202.0.0/24
 
