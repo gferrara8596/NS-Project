@@ -16,7 +16,7 @@ services:
       MYSQL_PASSWORD: wordpress
     networks:
       web:
-        ipv4_address: 202.202.0.18
+        ipv4_address: 193.20.1.2
 
   phpmyadmin:
     image: phpmyadmin
@@ -25,22 +25,19 @@ services:
       - 8080:80
     environment:
       - PMA_ARBITRARY=1
-      - PMA_HOST=202.202.0.18
+      - PMA_HOST=172.18.1.2
       - PMA_PORT=3306
     networks:
       web:
-        ipv4_address: 202.202.0.12
-    
+        ipv4_address: 193.20.1.3
+
   wordpress:
     image: wordpress:5.5.3-php7.3
     ports:
-      - "80:80"
-    
+      - "80:80" 
     volumes:
       - ./wp-data:/var/www/html
       - ./wp/config/php.conf.ini:/usr/local/etc/php/conf.d/php.ini
-    
-
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_USER: wordpress
@@ -50,26 +47,17 @@ services:
       - db
     networks:
       web:
-        ipv4_address: 202.202.0.16
+        ipv4_address: 193.20.1.4
   kali:
     image: gferrara8596/ns-kali
-    networks:
-      web:
-        ipv4_address: 202.202.0.5
-  
-  firefox:
-    image: jlesage/firefox
     ports:
-      - "5800:5800"
-    
+      - "5901:5901"
     networks:
       web:
-        ipv4_address: 202.202.0.11
-
+        ipv4_address: 193.20.1.5
 networks:
   web:
     driver: bridge
     ipam:
       config:
-        - subnet: 202.202.0.0/24
-
+        - subnet: 193.20.1.1/24
